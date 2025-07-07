@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const serverless = require('serverless-http');
 require('dotenv').config();
 
 const app = express();
@@ -21,13 +20,10 @@ app.use('/api/categories', categoryRoutes);
 app.use('/uploads/users', express.static('uploads/users'));
 app.use('/api/users', userRoutes);
 
-// ✅ Untuk Vercel
-module.exports = serverless(app);
+// ✅ Mulai server (lokal atau production)
+const PORT = process.env.PORT || 5000;
+const HOST = '0.0.0.0';
 
-// ✅ Opsional: Untuk development lokal
-if (require.main === module) {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-}
+app.listen(PORT, HOST, () => {
+  console.log(`✅ Server running on http://${HOST}:${PORT}`);
+});
