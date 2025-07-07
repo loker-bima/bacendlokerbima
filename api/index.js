@@ -18,7 +18,6 @@ const userRoutes = require('../routes/userRoutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/categories', categoryRoutes);
-app.use('/uploads/users', express.static('uploads/users'));
 app.use('/api/users', userRoutes);
 
 // ✅ Untuk Vercel
