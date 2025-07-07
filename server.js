@@ -10,20 +10,16 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-const authRoutes = require('../routes/authRoutes');
-const jobRoutes = require('../routes/jobRoutes');
-const categoryRoutes = require('../routes/categoryRoutes');
-const userRoutes = require('../routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
+const jobRoutes = require('./routes/jobRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/uploads/users', express.static('uploads/users'));
 app.use('/api/users', userRoutes);
-
-// ✅ Tambahkan ini agar route / tidak error
-app.get("/", (req, res) => {
-  res.send("✅ API Loker Bima berjalan dengan baik di Vercel");
-});
 
 // ✅ Untuk Vercel
 module.exports = serverless(app);
