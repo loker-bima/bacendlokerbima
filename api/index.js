@@ -10,10 +10,10 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-const authRoutes = require('./routes/authRoutes');
-const jobRoutes = require('./routes/jobRoutes');
-const categoryRoutes = require('./routes/categoryRoutes');
-const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('../routes/authRoutes');
+const jobRoutes = require('../routes/jobRoutes');
+const categoryRoutes = require('../routes/categoryRoutes');
+const userRoutes = require('../routes/userRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
