@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
-const multer = require('multer');
-const path = require('path');
 const bcrypt = require('bcryptjs');
 
 // ✅ GANTI PASSWORD
@@ -28,26 +26,15 @@ router.put('/change-password/:id', async (req, res) => {
 router.delete('/:id', (req, res) => {
   const userId = req.params.id;
 
-  // Hapus dulu semua job milik user (jika dia company)
   db.query('DELETE FROM job_listings WHERE company_id = ?', [userId], (err1) => {
     if (err1) return res.status(500).json({ message: 'Gagal menghapus job listing' });
 
-    // Baru hapus user
     db.query('DELETE FROM users WHERE id = ?', [userId], (err2) => {
       if (err2) return res.status(500).json({ message: 'Gagal menghapus akun' });
       res.json({ message: 'Akun berhasil dihapus' });
     });
   });
 });
-
-// Setup multer
-const storage = multer.diskStorage({
-  destination: './uploads/users',
-  filename: (req, file, cb) => {
-    cb(null, 'user-' + Date.now() + path.extname(file.originalname));
-  }
-});
-const upload = multer({ storage });
 
 // ✅ GET: /api/users/:id (ambil data user by ID)
 router.get('/:id', (req, res) => {
@@ -58,22 +45,13 @@ router.get('/:id', (req, res) => {
   });
 });
 
-// ✅ PUT: /api/users/:id (update + upload photo)
-router.put('/:id', upload.single('photo'), (req, res) => {
+// ✅ PUT: /api/users/:id (update + photo base64)
+router.put('/:id', (req, res) => {
   const { id } = req.params;
-  const { name, email, location } = req.body;
-  const photo = req.file ? req.file.filename : null;
+  const { name, email, location, photo } = req.body;
 
-  let sql = `UPDATE users SET name=?, email=?, location=?`;
-  const params = [name, email, location];
-
-  if (photo) {
-    sql += `, photo=?`;
-    params.push(photo);
-  }
-
-  sql += ` WHERE id=?`;
-  params.push(id);
+  const sql = `UPDATE users SET name=?, email=?, location=?, photo=? WHERE id=?`;
+  const params = [name, email, location, photo, id];
 
   db.query(sql, params, (err, result) => {
     if (err) return res.status(500).json({ error: 'Gagal update user' });
