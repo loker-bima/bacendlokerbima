@@ -21,10 +21,10 @@ app.use('/api/categories', categoryRoutes);
 app.use('/uploads/users', express.static('uploads/users'));
 app.use('/api/users', userRoutes);
 
-// Jika untuk Serverless (misalnya Vercel):
-module.exports.handler = serverless(app);
+// ✅ Untuk Vercel
+module.exports = serverless(app);
 
-// Jika untuk server biasa (local dev):
+// ✅ Opsional: Untuk development lokal
 if (require.main === module) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
