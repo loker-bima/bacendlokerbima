@@ -20,6 +20,11 @@ app.use('/api/jobs', jobRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
 
+// ✅ Tambahkan ini agar route / tidak error
+app.get("/", (req, res) => {
+  res.send("✅ API Loker Bima berjalan dengan baik di Vercel");
+});
+
 // ✅ Untuk Vercel
 module.exports = serverless(app);
 
